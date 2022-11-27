@@ -17,9 +17,9 @@ using System.Windows.Shapes;
 
 namespace Reserva.Pages
 {
-    public partial class PaginaProf : Page
+    public partial class Aulas : Page
     {
-        public PaginaProf()
+        public Aulas()
         {
             InitializeComponent();
             CargarDatos();
@@ -28,58 +28,56 @@ namespace Reserva.Pages
         static readonly HttpClient cliente = new HttpClient();
         int pos = 0;
 
-
-        static async Task<List<Profesor>> GetProfesor(String path)
+        static async Task<List<Aula>> GetAulas(string path)
         {
 
             HttpResponseMessage msg = await cliente.GetAsync(path);
 
-            List<Profesor> prof = null;
+            List<Aula> aula = null;
 
 
             if (msg.IsSuccessStatusCode)
             {
                 var salida = await msg.Content.ReadAsStringAsync();
-
-                prof = JsonConvert.DeserializeObject<List<Profesor>>(salida);
+                aula = JsonConvert.DeserializeObject<List<Aula>>(salida);
             }
-            return prof;
+            
+            return aula;
         }
 
-        private async Task<Profesor> PostProfesor(Profesor profesor, String path)
+        private async Task<Aula> PostAula(Aula aula, String path)
         {
-            Profesor prof = null;
-            var json = JsonConvert.SerializeObject(profesor);
+            Aula au = null;
+            var json = JsonConvert.SerializeObject(aula);
             var cabeceras = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage msg = await cliente.PostAsync(path, cabeceras);
             if (msg.IsSuccessStatusCode)
             {
                 var salida = await msg.Content.ReadAsStringAsync();
-                prof = JsonConvert.DeserializeObject<Profesor>(salida);
+                au = JsonConvert.DeserializeObject<Aula>(salida);
 
             }
-            
+
             CargarDatos();
-            return prof;
+            return au;
         }
 
         private async void CargarDatos()
         {
-            List<Profesor> profesores = null;
+            List<Aula> aulas = null;
             try
             {
-                profesores = await GetProfesor("http://localhost:3000/profesores");
+                aulas = await GetAulas("http://localhost:3000/aulas");
             }
             catch
             {
-                MessageBox.Show("No hay conexión..");//muestra un mensaje
-                Environment.Exit(1);//cierra el progra
+
             }
-            grid.ItemsSource = profesores;
+            grid.ItemsSource = aulas;
             grid.Items.Refresh();
         }
 
-        private async Task<Boolean> DelProf(String path)
+        private async Task<Boolean> DelAula(String path)
         {
             Boolean ProReturn = false;
 
@@ -96,39 +94,34 @@ namespace Reserva.Pages
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbnombre.Text) || 
-                string.IsNullOrWhiteSpace(tbtlf.Text) || 
-                string.IsNullOrWhiteSpace(tbapellidos.Text) || 
-                string.IsNullOrWhiteSpace(tbesp.Text) ||
-                string.IsNullOrWhiteSpace(dtfecha.Text))
+            if (string.IsNullOrWhiteSpace(tbnombre.Text) ||
+                string.IsNullOrWhiteSpace(tbcap.Text) ||
+                string.IsNullOrWhiteSpace(tbplanta.Text) ||
+                string.IsNullOrWhiteSpace(tbubi.Text))
             {
                 MessageBox.Show("Hay campos sin rellenar");
                 return;
             }
 
-            Profesor profesor = new Profesor(
+            Aula aula = new Aula(
                 tbnombre.Text.ToString(),
-                tbapellidos.Text.ToString(),
-                tbesp.Text.ToString(),
-                tbtlf.Text.ToString(),
-                cbsexo.Text.ToString(),
-                dtfecha.Text.ToString());
+                tbubi.Text.ToString(),
+                tbplanta.Text.ToString(),
+                tbcap.Text.ToString());
 
-            await PostProfesor(profesor, "http://localhost:3000/profesores");
+            await PostAula(aula, "http://localhost:3000/aulas");
 
             tbnombre.Text = "";
-            tbapellidos.Text = "";
-            tbesp.Text = "";
-            tbtlf.Text = "";
-            cbsexo.SelectedIndex= 0;
-            dtfecha.Text = "";
+            tbcap.Text = "";
+            tbplanta.Text = "";
+            tbubi.Text = "";
 
         }
 
         private void grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid grid = sender as DataGrid;
-            Profesor fila = grid.SelectedItem as Profesor;
+            Aula fila = grid.SelectedItem as Aula;
             if (fila != null)
             {
                 pos = fila.id;
@@ -139,11 +132,10 @@ namespace Reserva.Pages
         {
             if (pos == 0)
             {
-                MessageBox.Show("Selecciona un profesor");
-                return;
+                MessageBox.Show("Selecciona un aula");
             }
-                await DelProf("http://localhost:3000/profesores/" + pos);
-                pos = 0;
+                await DelAula("http://localhost:3000/aulas/" + pos);
+                pos= 0;
         }
     }
 }

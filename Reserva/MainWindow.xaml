@@ -48,10 +48,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnProfesores" Content="Profesores" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Click="btnProfesores_Click"/>
-        <Button x:Name="btnAulas" Content="Aulas" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" />
-        <Button x:Name="btnAlumnos" Content="Alumnos" Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" />
-        <Button x:Name="btnReservas" Content="Reservas" Grid.Row="1" Grid.Column="10" Grid.ColumnSpan="2" />
+        <Button x:Name="btnProfesores" Content="Profesores" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Click="btnProfesores_Click"/>
+        <Button x:Name="btnAulas" Content="Aulas" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Click="btnAulas_Click" />
+        <Button x:Name="btnReservas" Content="Reservas" Grid.Row="1" Grid.Column="9" Grid.ColumnSpan="3" Click="btnReservas_Click" />
         <Frame NavigationUIVisibility="Hidden" x:Name="frameP" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="13" Grid.RowSpan="14"/>
     </Grid>
 </Window>

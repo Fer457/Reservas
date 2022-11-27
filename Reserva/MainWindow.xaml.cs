@@ -27,5 +27,15 @@ namespace Reserva
         {
             frameP.NavigationService.Navigate(new Pages.PaginaProf());
         }
+
+        private void btnAulas_Click(object sender, RoutedEventArgs e)
+        {
+            frameP.NavigationService.Navigate(new Pages.Aulas());
+        }
+
+        private void btnReservas_Click(object sender, RoutedEventArgs e)
+        {
+            frameP.NavigationService.Navigate(new Pages.Reservas());
+        }
     }
 }
