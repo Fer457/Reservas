@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Reserva.Pages"
+      xmlns:local="clr-namespace:Reserva.Pages" 
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Reservas">
@@ -12,6 +13,46 @@
     </Page.Background>
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.ColumnSpan="2" FontSize="25" Grid.Column="5" Grid.Row="0" Content="Reservas"/>
+
+        <ComboBox x:Name="cbprof" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="lbprof" Grid.Row="2" Grid.Column="0" Content="Profesor"/>
+        <ComboBox x:Name="cbaula" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="lbaula" Grid.Row="3" Grid.Column="0" Content="Aula" />
+        <xctk:DateTimePicker x:Name="dtfecha" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="lbfecha" Grid.Row="4" Grid.Column="0" Content="Dia y hora" />
+
+        <Button Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="9" Content="Enviar" Background="#FFC17FD0" Click="Button_Click"/>
+        <Button Grid.Column="3" Grid.Row="9" Content="Borrar" Background="#FFC17FD0" Click="Button_Click_1Async"/>
+
+        <DataGrid Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="6" Grid.RowSpan="6" ItemsSource="{Binding}" x:Name="grid" SelectionChanged="grid_SelectionChanged"></DataGrid>
+
     </Grid>
 </Page>
