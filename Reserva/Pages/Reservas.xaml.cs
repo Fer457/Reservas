@@ -25,6 +25,9 @@ namespace Reserva.Pages
         public Reservas()
         {
             InitializeComponent();
+            CargarDatosProf();
+            CargarDatosAula();
+            CargarDatos();
         }
         static readonly HttpClient cliente = new HttpClient();
         int pos = 0;
@@ -103,8 +106,8 @@ namespace Reserva.Pages
 
             Rsrv reserva = new Rsrv(
                 dtfecha.Text.ToString(),
-                cbaula.Text.ToString(),
-                cbprof.Text.ToString());
+                cbprof.Text.ToString(),
+                cbaula.Text.ToString());
 
             await PostReserva(reserva, "http://localhost:3000/reservas");
 
@@ -133,5 +136,81 @@ namespace Reserva.Pages
             await DelReserva("http://localhost:3000/reservas/" + pos);
             pos = 0;
         }
+
+        static async Task<List<Profesor>> GetProfesor(String path)
+        {
+
+            HttpResponseMessage msg = await cliente.GetAsync(path);
+
+            List<Profesor> prof = null;
+
+
+            if (msg.IsSuccessStatusCode)
+            {
+                var salida = await msg.Content.ReadAsStringAsync();
+
+                prof = JsonConvert.DeserializeObject<List<Profesor>>(salida);
+            }
+            return prof;
+        }
+
+        private async void CargarDatosProf()
+        {
+            List<Profesor> profesores = null;
+            try
+            {
+                profesores = await GetProfesor("http://localhost:3000/profesores");
+            }
+            catch
+            {
+                MessageBox.Show("No hay conexión..");//muestra un mensaje
+                Environment.Exit(1);//cierra el progra
+            }
+            foreach (Profesor item in profesores)
+            {
+                ComboBoxItem Prof = new ComboBoxItem();
+                Prof.Content = item.Nombre;
+                cbprof.Items.Add(Prof);
+            }
+            cbprof.SelectedIndex = 0;
+        }
+
+        static async Task<List<Aula>> GetAulas(string path)
+        {
+
+            HttpResponseMessage msg = await cliente.GetAsync(path);
+
+            List<Aula> aula = null;
+
+
+            if (msg.IsSuccessStatusCode)
+            {
+                var salida = await msg.Content.ReadAsStringAsync();
+                aula = JsonConvert.DeserializeObject<List<Aula>>(salida);
+            }
+
+            return aula;
+        }
+
+        private async void CargarDatosAula()
+        {
+            List<Aula> aulas = null;
+            try
+            {
+                aulas = await GetAulas("http://localhost:3000/aulas");
+            }
+            catch
+            {
+
+            }
+            foreach (Aula item in aulas)
+            {
+                ComboBoxItem Aula = new ComboBoxItem();
+                Aula.Content = item.Nombre;
+                cbaula.Items.Add(Aula);
+            }
+            cbaula.SelectedIndex = 0;
+        }
+
     }
 }
